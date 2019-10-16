@@ -1,0 +1,40 @@
+# -*- coding: utf-8 -*-
+import smtplib
+from email.mime.text import MIMEText
+from email.header import Header
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
+
+
+#mail_host="42.159.163.130"
+mail_host="partner.outlook.cn"
+mail_user="yanglei@kuandeng.com"
+mail_pass="admin@123"
+
+sender = "yanglei@kuandeng.com"
+receivers = '815033594@qq.com'
+
+mail_msg = """
+<p>Python 邮件</p>
+<p><a href="http://www.baidu.com">终于能写中文了</a></p>
+"""
+
+message = MIMEText(mail_msg,'html',"utf-8")
+message['From'] =sender
+message['To'] = receivers
+
+subject = 'Python SMTP '
+message['Subject'] = Header('Mail test ')
+#message['Subject'] = Header('Mail test ','us-ascii')
+
+try:
+    smtpObj = smtplib.SMTP(mail_host,587)
+   # smtpObj.connect(mail_host,587)
+    smtpObj.ehlo()
+    smtpObj.starttls()
+    smtpObj.login(mail_user,mail_pass)
+    smtpObj.sendmail(sender,receivers,message.as_string())
+    print"succeed"
+except smtplib.SMTPException:
+    print "Error:"
